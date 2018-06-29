@@ -19,6 +19,8 @@ from lcd_st7032 import ST7032
 
 lcd = ST7032()
 lcd.write("Hello World!")
+lcd.setCursor(1, 0)
+lcd.write([0xba, 0xdd, 0xc6, 0xc1, 0xdc, '!'])
 ```
 
 # LICENSE

@@ -152,6 +152,9 @@ class ST7032(object):
     def _delay(milli_secs):
         time.sleep(milli_secs * 0.001)
 
+
 if __name__ == '__main__':
-    aqm1602 = ST7032()
-    aqm1602.write("Hello!")
+    lcd = ST7032()
+    lcd.write("Hello!")
+    lcd.setCursor(1, 0)
+    lcd.write([0xba, 0xdd, 0xc6, 0xc1, 0xdc, '!'])
