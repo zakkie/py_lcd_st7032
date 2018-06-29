@@ -1,4 +1,5 @@
 import time
+from typing import Union, List
 
 import Adafruit_PureIO.smbus as smbus
 
@@ -128,9 +129,14 @@ class ST7032(object):
     def getcontrast(self):
         return self._contrast
 
-    def write(self, data:str):
+    def write(self, data:Union[str, List[int]]):
         for c in data[:self.MAX_COL]:
-            self._write_data(ord(c))
+            if type(c) is int:
+                self._write_data(c)
+            elif type(c) is str:
+                self._write_data(ord(c))
+            else:
+                raise ValueError('require str or int list')
 
     def _write_instruction(self, cmd:int):
         with smbus.SMBus(self.bus_num) as i2c:
@@ -146,6 +152,9 @@ class ST7032(object):
     def _delay(milli_secs):
         time.sleep(milli_secs * 0.001)
 
+
 if __name__ == '__main__':
-    aqm1602 = ST7032()
-    aqm1602.write("Hello!")
+    lcd = ST7032()
+    lcd.write("Hello!")
+    lcd.setCursor(1, 0)
+    lcd.write([0xba, 0xdd, 0xc6, 0xc1, 0xdc, '!'])
